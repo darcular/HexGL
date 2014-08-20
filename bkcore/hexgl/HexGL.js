@@ -415,9 +415,9 @@ bkcore.hexgl.HexGL.prototype.tweakShipControls = function()
 	{
 		c.airResist = 0.02;
 		c.airDrift = 0.06;
-		c.thrust = 0.02;
+		c.thrust = 0.005;
 		c.airBrake = 0.025;
-		c.maxSpeed = 7.0;
+		c.maxSpeed = 2.1; //1.5
 		c.boosterSpeed = c.maxSpeed * 0.5;
 		c.boosterDecay = 0.007;
 		c.angularSpeed = 0.0125;

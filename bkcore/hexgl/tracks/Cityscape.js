@@ -452,7 +452,8 @@ bkcore.hexgl.tracks.Cityscape = {
 				this.objects.components.shipControls.getRealSpeed(100),
 				this.objects.components.shipControls.getRealSpeedRatio(),
 				this.objects.components.shipControls.getShield(100),
-				this.objects.components.shipControls.getShieldRatio()
+				this.objects.components.shipControls.getShieldRatio(),
+                this.objects.components.shipControls.xlabController
 			);
 			if(this.objects.components.shipControls.getShieldRatio() < 0.2)
 				this.objects.extras.vignetteColor.setHex(0x992020);

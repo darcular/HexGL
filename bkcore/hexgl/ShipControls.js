@@ -24,9 +24,9 @@ bkcore.hexgl.ShipControls = function(ctx)
 	this.zero = new THREE.Vector3(0,0,0);
 	this.airResist = 0.02;
 	this.airDrift = 0.1;
-	this.thrust = 0.02;
+	this.thrust = 0.02; //0.02
 	this.airBrake = 0.02;
-	this.maxSpeed = 7.0;
+	this.maxSpeed = 7.0; //7.0
 	this.boosterSpeed = this.maxSpeed * 0.2;
 	this.boosterDecay = 0.01;
 	this.angularSpeed = 0.005;
@@ -120,9 +120,10 @@ bkcore.hexgl.ShipControls = function(ctx)
 
 	this.touchController = null;
 	this.orientationController = null;
-	this.gamepadController = null
+	this.gamepadController = null;
+    this.xlabController = null;
 
-	if(ctx.controlType == 1 && bkcore.controllers.TouchController.isCompatible())
+	if(ctx.controlType == 2 && bkcore.controllers.TouchController.isCompatible())
 	{
 		this.touchController = new bkcore.controllers.TouchController(
 			domElement, ctx.width/2,
@@ -140,7 +141,7 @@ bkcore.hexgl.ShipControls = function(ctx)
 				}
 			});
 	}
-	else if(ctx.controlType == 4 && bkcore.controllers.OrientationController.isCompatible())
+	else if(ctx.controlType == 5 && bkcore.controllers.OrientationController.isCompatible())
 	{
 		this.orientationController = new bkcore.controllers.OrientationController(
 			domElement, true,
@@ -155,7 +156,7 @@ bkcore.hexgl.ShipControls = function(ctx)
 					self.key.forward = true;
 			});
 	}
-	else if(ctx.controlType == 3 && bkcore.controllers.GamepadController.isCompatible())
+	else if(ctx.controlType == 4 && bkcore.controllers.GamepadController.isCompatible())
 	{
 		this.gamepadController = new bkcore.controllers.GamepadController(
       function(controller){
@@ -169,7 +170,7 @@ bkcore.hexgl.ShipControls = function(ctx)
           self.key.right = controller.lstickx > 0.1;
       });
 	}
-	else if(ctx.controlType == 2)
+	else if(ctx.controlType == 3)
 	{
 		if(Leap == null)
 			throw new Error("Unable to reach LeapJS!");
@@ -247,6 +248,10 @@ bkcore.hexgl.ShipControls = function(ctx)
 		});
 		lc.connect();
 	}
+    else if(ctx.controlType == 1)
+    {
+        this.xlabController = new Xlabs.webCamController();
+    }
 
 	function onKeyDown(event)
 	{
@@ -352,7 +357,7 @@ bkcore.hexgl.ShipControls.prototype.fall = function()
 	this.collision.left = false;
 	this.collision.right = false;
 	this.falling = true;
-	_this = this;
+	var _this = this;
 	setTimeout(function(){
 		_this.destroyed = true;
 	}, 1500);
@@ -404,6 +409,14 @@ bkcore.hexgl.ShipControls.prototype.update = function(dt)
 			angularAmount += this.leapBridge.palmNormal[0] * 2 * this.angularSpeed * dt;
 			this.speed += Math.max(0.0, (0.5 + this.leapBridge.palmNormal[2])) * 3 * this.thrust * dt;
 		}
+        else if(this.xlabController != null){
+//            angularAmount += Xlabs.convertValue(this.xlabController.roll*4)*this.angularSpeed*dt;//this.xlabController.roll*3*this.angularSpeed*dt;
+            angularAmount += Xlabs.convertValue2(this.xlabController.roll*4, this.xlabController.breakPointsX, this.xlabController.breakPointsY)*this.angularSpeed*dt;
+//            if(this.xlabController.roll>0.08)
+//                rollAmount-=this.rollAngle;
+//            if(this.xlabController.roll<-0.08)
+//                rollAmount+=this.rollAngle;
+        }
 		else
 		{
 			if(this.key.left)
@@ -450,6 +463,7 @@ bkcore.hexgl.ShipControls.prototype.update = function(dt)
 		}
 	}
 
+//    console.log(rollAmount);
 	this.angular += (angularAmount - this.angular) * this.angularLerp;
 	this.rotation.y = this.angular;
 

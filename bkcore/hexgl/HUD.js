@@ -119,7 +119,7 @@ bkcore.hexgl.HUD.prototype.resetTime = function()
 	this.time = "";
 }
 
-bkcore.hexgl.HUD.prototype.update = function(speed, speedRatio, shield, shieldRatio)
+bkcore.hexgl.HUD.prototype.update = function(speed, speedRatio, shield, shieldRatio, xlabController)
 {
 	var SCREEN_WIDTH = this.width;
 	var SCREEN_HEIGHT = this.height;
@@ -144,6 +144,7 @@ bkcore.hexgl.HUD.prototype.update = function(speed, speedRatio, shield, shieldRa
 	var ba = nh;
 	var bl = SCREEN_WIDTH/this.speedBarRatio;
 	var bw = bl * speedRatio;
+
 	//shieldbar
 	var sw = SCREEN_WIDTH/this.shieldBarWRatio;
 	var sho = SCREEN_WIDTH/this.shieldBarHRatio;
@@ -159,16 +160,42 @@ bkcore.hexgl.HUD.prototype.update = function(speed, speedRatio, shield, shieldRa
 		{
 		    this.ctx.drawImage(this.bg, o, oh, nw, nh);
 
-		    this.ctx.save();
-			this.ctx.beginPath();
-			this.ctx.moveTo(bw+ba+SCREEN_HW, oh);
-			this.ctx.lineTo(-(bw+ba)+SCREEN_HW, oh);
-			this.ctx.lineTo(-bw+SCREEN_HW, SCREEN_HEIGHT);
-			this.ctx.lineTo(bw+SCREEN_HW, SCREEN_HEIGHT);
-			this.ctx.lineTo(bw+ba+SCREEN_HW, oh);
-			this.ctx.clip();
-		    this.ctx.drawImage(this.fgspeed, o, oh, nw, nh);
-			this.ctx.restore();
+            if(xlabController!=null){
+//                this.ctx.font = (SCREEN_WIDTH/this.speedFontRatio)+"px "+this.font;
+//                this.ctx.fillStyle = "rgba(255, 255, 255, 0.8)";
+//                this.ctx.fillText('haha', SCREEN_HW, SCREEN_HEIGHT -200);
+                if(xlabController.roll*4>1.0 || xlabController.roll*4<-1.0)
+                    this.display('Turn too fast!!');
+                bw = (xlabController.roll/0.28)*bl;
+                this.ctx.save();
+                this.ctx.beginPath();
+                this.ctx.moveTo(bw+ba+SCREEN_HW, oh);
+                if(bw>0){
+                    this.ctx.lineTo(-(bw+ba)+SCREEN_HW, oh);
+                    this.ctx.lineTo(-bw+SCREEN_HW, SCREEN_HEIGHT); //left strip
+                    this.ctx.lineTo(bw+ba+SCREEN_HW, oh);
+                }
+                else{
+                    this.ctx.lineTo(-(-bw+ba)+SCREEN_HW, oh);
+                    this.ctx.lineTo(-bw+SCREEN_HW, SCREEN_HEIGHT);
+                    this.ctx.lineTo(-bw+ba+SCREEN_HW, oh);
+                }
+                this.ctx.clip();
+                this.ctx.drawImage(this.fgspeed, o, oh, nw, nh);
+                this.ctx.restore();
+            }
+            else{
+                this.ctx.save();
+                this.ctx.beginPath();
+                this.ctx.moveTo(bw+ba+SCREEN_HW, oh);
+                this.ctx.lineTo(-(bw+ba)+SCREEN_HW, oh);
+//                this.ctx.lineTo(-bw+SCREEN_HW, SCREEN_HEIGHT); //left strip
+			    this.ctx.lineTo(bw+SCREEN_HW, SCREEN_HEIGHT);
+			    this.ctx.lineTo(bw+ba+SCREEN_HW, oh);
+                this.ctx.clip();
+                this.ctx.drawImage(this.fgspeed, o, oh, nw, nh);
+                this.ctx.restore();
+            }
 
 		    this.ctx.save();
 			this.ctx.beginPath();
