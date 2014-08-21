@@ -412,6 +412,7 @@ bkcore.hexgl.ShipControls.prototype.update = function(dt)
         else if(this.xlabController != null){
 //            angularAmount += Xlabs.convertValue(this.xlabController.roll*4)*this.angularSpeed*dt;//this.xlabController.roll*3*this.angularSpeed*dt;
             angularAmount += Xlabs.convertValue2(this.xlabController.roll*4, this.xlabController.breakPointsX, this.xlabController.breakPointsY)*this.angularSpeed*dt;
+            rollAmount -= this.rollAngle*Xlabs.convertValue2(this.xlabController.roll*3, this.xlabController.breakPointsX, this.xlabController.breakPointsY);
 //            if(this.xlabController.roll>0.08)
 //                rollAmount-=this.rollAngle;
 //            if(this.xlabController.roll<-0.08)

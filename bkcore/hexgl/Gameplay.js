@@ -46,7 +46,7 @@ bkcore.hexgl.Gameplay = function(opts)
 	this.lap = 1;
 	this.lapTimes = [];
 	this.lapTimeElapsed = 0;
-	this.maxLaps = 3;
+	this.maxLaps = 1;
 	this.score = null;
 	this.finishTime = null;
 	this.onFinish = opts.onFinish == undefined ? function(){console.log("FINISH");} : opts.onFinish;

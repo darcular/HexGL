@@ -189,7 +189,7 @@ bkcore.hexgl.HUD.prototype.update = function(speed, speedRatio, shield, shieldRa
                 this.ctx.beginPath();
                 this.ctx.moveTo(bw+ba+SCREEN_HW, oh);
                 this.ctx.lineTo(-(bw+ba)+SCREEN_HW, oh);
-//                this.ctx.lineTo(-bw+SCREEN_HW, SCREEN_HEIGHT); //left strip
+                this.ctx.lineTo(-bw+SCREEN_HW, SCREEN_HEIGHT); //left strip
 			    this.ctx.lineTo(bw+SCREEN_HW, SCREEN_HEIGHT);
 			    this.ctx.lineTo(bw+ba+SCREEN_HW, oh);
                 this.ctx.clip();
