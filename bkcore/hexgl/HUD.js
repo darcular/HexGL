@@ -231,6 +231,21 @@ bkcore.hexgl.HUD.prototype.update = function(speed, speedRatio, shield, shieldRa
 		    this.ctx.fillText(this.time, SCREEN_HW, SCREEN_WIDTH/this.timeMarginRatio);
 		}
 
+        //autoAcc
+        if(xlabController!=null)
+        {
+            if(xlabController.autoAcc){
+                this.ctx.font = 20+"px "+this.font;
+                this.ctx.fillStyle = "rgba(255, 255, 255, 0.8)";
+                this.ctx.fillText("Auto Accelerate", SCREEN_HW-500, SCREEN_WIDTH/this.timeMarginRatio-40);
+            }
+            else{
+                this.ctx.font = 20+"px "+this.font;
+                this.ctx.fillStyle = "rgba(255, 255, 255, 0.8)";
+                this.ctx.fillText("Press Enter key to auto acc", SCREEN_HW-500, SCREEN_WIDTH/this.timeMarginRatio-40);
+            }
+        }
+
 		// LAPS
 		if(this.lap != "")
 		{

@@ -5,6 +5,7 @@ Xlabs.isCamOn = false;
 Xlabs.webCamController = function(){
     this.roll = 0;
     this.isFaceDetected = true;
+    this.autoAcc = false;
     this.init();
     this.breakPointsX = [-1.0,-0.8,-0.5,0,0.5,0.8,1.0];
     this.breakPointsY = [-1.0,-0.8,-0.5,0,0.5,0.8,1.0];

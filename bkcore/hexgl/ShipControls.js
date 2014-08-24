@@ -248,9 +248,16 @@ bkcore.hexgl.ShipControls = function(ctx)
 		});
 		lc.connect();
 	}
-    else if(ctx.controlType == 1)
+    else if(ctx.controlType == 1 && Xlabs.isXlabReady)
     {
         this.xlabController = new Xlabs.webCamController();
+        var onKeyPress = function (event){
+            switch(event.keyCode)
+            {
+                case 13: /*enter*/ self.xlabController.autoAcc=!self.xlabController.autoAcc;
+            }
+        }
+        domElement.addEventListener('keypress', onKeyPress, false);
     }
 
 	function onKeyDown(event)
@@ -292,6 +299,9 @@ bkcore.hexgl.ShipControls = function(ctx)
 			case 69: /*E*/self.key.rtrigger = false; break;
 		}
 	};
+
+    //autoACC
+
 
 	domElement.addEventListener('keydown', onKeyDown, false);
 	domElement.addEventListener('keyup', onKeyUp, false);
@@ -413,10 +423,6 @@ bkcore.hexgl.ShipControls.prototype.update = function(dt)
 //            angularAmount += Xlabs.convertValue(this.xlabController.roll*4)*this.angularSpeed*dt;//this.xlabController.roll*3*this.angularSpeed*dt;
             angularAmount += Xlabs.convertValue2(this.xlabController.roll*4, this.xlabController.breakPointsX, this.xlabController.breakPointsY)*this.angularSpeed*dt;
             rollAmount -= this.rollAngle*Xlabs.convertValue2(this.xlabController.roll*3, this.xlabController.breakPointsX, this.xlabController.breakPointsY);
-//            if(this.xlabController.roll>0.08)
-//                rollAmount-=this.rollAngle;
-//            if(this.xlabController.roll<-0.08)
-//                rollAmount+=this.rollAngle;
         }
 		else
 		{
@@ -432,7 +438,7 @@ bkcore.hexgl.ShipControls.prototype.update = function(dt)
 			}
 		}
 
-		if(this.key.forward)
+		if(this.key.forward || (this.xlabController!=null && this.xlabController.autoAcc==true))
 			this.speed += this.thrust * dt;
 		else
 			this.speed -= this.airResist * dt;
