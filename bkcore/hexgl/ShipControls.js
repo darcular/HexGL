@@ -251,13 +251,13 @@ bkcore.hexgl.ShipControls = function(ctx)
     else if(ctx.controlType == 1 && Xlabs.isXlabReady)
     {
         this.xlabController = new Xlabs.webCamController();
-        var onKeyPress = function (event){
-            switch(event.keyCode)
-            {
-                case 13: /*enter*/ self.xlabController.autoAcc=!self.xlabController.autoAcc;
-            }
-        }
-        domElement.addEventListener('keypress', onKeyPress, false);
+//        var onKeyPress = function (event){
+//            switch(event.keyCode)
+//            {
+//                case 13: /*enter*/ self.xlabController.autoAcc=!self.xlabController.autoAcc;
+//            }
+//        }
+//        domElement.addEventListener('keypress', onKeyPress, false);
     }
 
 	function onKeyDown(event)
@@ -438,7 +438,7 @@ bkcore.hexgl.ShipControls.prototype.update = function(dt)
 			}
 		}
 
-		if(this.key.forward || (this.xlabController!=null && this.xlabController.autoAcc==true))
+		if(this.key.forward || (this.xlabController!=null && this.xlabController.autoAcc==true && !this.key.backward))
 			this.speed += this.thrust * dt;
 		else
 			this.speed -= this.airResist * dt;
